@@ -1,0 +1,416 @@
+/* Educational Theme CSS Variables and Styles */
+
+:root {
+  /* Primary colors */
+  --edu-primary: #1e40af;        /* Deep blue */
+  --edu-primary-light: #3b82f6;  /* Lighter blue */
+  --edu-secondary: #7c3aed;      /* Purple */
+  --edu-secondary-light: #a78bfa; /* Light purple */
+  --edu-accent: #f59e0b;         /* Gold/amber */
+  --edu-accent-light: #fcd34d;   /* Light gold */
+  
+  /* Success/Error colors */
+  --edu-success: #059669;        /* Green */
+  --edu-error: #dc2626;          /* Red */
+  
+  /* Neutral colors */
+  --edu-neutral-100: #f3f4f6;    /* Almost white */
+  --edu-neutral-200: #f9fafb;    /* Very light gray */
+  --edu-neutral-300: #e5e7eb;    /* Light gray */
+  --edu-neutral-400: #d1d5db;    /* Gray */
+  --edu-neutral-500: #9ca3af;    /* Medium gray */
+  --edu-neutral-600: #6b7280;    /* Dark gray */
+  --edu-neutral-700: #4b5563;    /* Darker gray */
+  --edu-neutral-800: #374151;    /* Very dark gray */
+  --edu-neutral-900: #1f2937;    /* Almost black */
+}
+
+/* Global styles */
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+  color: var(--edu-neutral-800);
+  background-color: var(--edu-neutral-200);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--edu-neutral-900);
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--edu-primary);
+  border-color: var(--edu-primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--edu-primary-light);
+  border-color: var(--edu-primary-light);
+}
+
+.btn-secondary {
+  background-color: var(--edu-secondary);
+  border-color: var(--edu-secondary);
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+  background-color: var(--edu-secondary-light);
+  border-color: var(--edu-secondary-light);
+}
+
+/* Card styles */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: none;
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid var(--edu-neutral-300);
+  font-weight: 600;
+}
+
+/* Form control styles */
+.form-control:focus, .form-select:focus {
+  border-color: var(--edu-primary-light);
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+/* Badge styles */
+.badge-primary {
+  background-color: var(--edu-primary-light);
+  color: white;
+}
+
+.badge-secondary {
+  background-color: var(--edu-secondary-light);
+  color: white;
+}
+
+.badge-accent {
+  background-color: var(--edu-accent);
+  color: white;
+}
+
+/* Table styles */
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: var(--edu-neutral-100);
+  color: var(--edu-neutral-700);
+  font-weight: 600;
+  border-bottom: none;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--edu-neutral-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--edu-neutral-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--edu-neutral-500);
+}
+
+/* Educational Institution Theme CSS */
+
+:root {
+  /* Primary Colors */
+  --edu-primary: #1e3a8a;      /* Deep blue - represents trust, wisdom */
+  --edu-primary-dark: #0f2557;  /* Darker blue for active states */
+  
+  /* Secondary Colors */
+  --edu-secondary: #7c3aed;    /* Purple - represents creativity, achievement */
+  --edu-secondary-dark: #6025c5;
+  
+  /* Accent Colors */
+  --edu-accent: #f59e0b;       /* Gold/amber - represents excellence, achievement */
+  --edu-accent-dark: #d97706;
+  
+  /* Neutral Colors */
+  --edu-neutral-200: #f8fafc;
+  --edu-neutral-300: #e2e8f0;
+  --edu-neutral-400: #94a3b8;
+  --edu-neutral-500: #64748b;
+  --edu-neutral-600: #475569;
+  --edu-neutral-700: #334155;
+  --edu-neutral-800: #1e293b;
+  --edu-neutral-900: #0f172a;
+  
+  /* Success/Error Colors */
+  --edu-warning: #f97316;
+  
+  /* Font Family */
+  --edu-font-primary: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --edu-font-secondary: 'Georgia', 'Times New Roman', serif;
+}
+
+/* Base Styles */
+body {
+  font-family: var(--edu-font-primary);
+  color: var(--edu-neutral-800);
+  background-color: var(--edu-neutral-200);
+}
+
+/* Component Styles */
+
+/* Buttons */
+.edu-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.edu-btn-primary {
+  background-color: var(--edu-primary);
+  color: white;
+}
+
+.edu-btn-primary:hover {
+  background-color: var(--edu-primary-light);
+  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
+}
+
+.edu-btn-secondary {
+  background-color: var(--edu-secondary);
+  color: white;
+}
+
+.edu-btn-secondary:hover {
+  background-color: var(--edu-secondary-light);
+  box-shadow: 0 4px 8px rgba(124, 58, 237, 0.2);
+}
+
+.edu-btn-accent {
+  background-color: var(--edu-accent);
+  color: white;
+}
+
+.edu-btn-accent:hover {
+  background-color: var(--edu-accent-light);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.2);
+}
+
+.edu-btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--edu-primary);
+  color: var(--edu-primary);
+}
+
+.edu-btn-outline:hover {
+  background-color: var(--edu-primary);
+  color: white;
+}
+
+/* Cards */
+.edu-card {
+  background-color: var(--edu-neutral-100);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.edu-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.edu-card-header {
+  background-color: var(--edu-primary);
+  color: white;
+  border-radius: 8px 8px 0 0;
+  padding: 1rem 1.5rem;
+}
+
+.edu-card-body {
+  padding: 1.5rem;
+}
+
+/* Forms */
+.edu-form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--edu-neutral-300);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.edu-form-control:focus {
+  border-color: var(--edu-primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+  outline: none;
+}
+
+.edu-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--edu-neutral-700);
+}
+
+/* Headings and Typography */
+.edu-heading {
+  color: var(--edu-primary);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.edu-subheading {
+  color: var(--edu-secondary);
+  font-weight: 600;
+}
+
+.edu-text-primary {
+  color: var(--edu-primary);
+}
+
+.edu-text-secondary {
+  color: var(--edu-secondary);
+}
+
+.edu-text-accent {
+  color: var(--edu-accent);
+}
+
+/* Layout Components */
+.edu-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.edu-section {
+  padding: 2rem 0;
+}
+
+.edu-divider {
+  height: 1px;
+  background-color: var(--edu-neutral-300);
+  margin: 2rem 0;
+}
+
+/* Navigation */
+.edu-navbar {
+  background-color: var(--edu-primary);
+  color: white;
+  padding: 1rem;
+}
+
+.edu-nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.edu-nav-link:hover {
+  background-color: var(--edu-primary-light);
+}
+
+/* Tables */
+.edu-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.edu-table th {
+  background-color: var(--edu-primary);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.edu-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--edu-neutral-300);
+}
+
+.edu-table tbody tr:hover {
+  background-color: var(--edu-neutral-200);
+}
+
+/* Badges */
+.edu-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.edu-badge-primary {
+  background-color: var(--edu-primary);
+  color: white;
+}
+
+.edu-badge-secondary {
+  background-color: var(--edu-secondary);
+  color: white;
+}
+
+.edu-badge-accent {
+  background-color: var(--edu-accent);
+  color: white;
+}
+
+/* Utility Classes */
+.edu-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edu-rounded {
+  border-radius: 8px;
+}
+
+.edu-bg-primary {
+  background-color: var(--edu-primary);
+  color: white;
+}
+
+.edu-bg-secondary {
+  background-color: var(--edu-secondary);
+  color: white;
+}
+
+.edu-bg-accent {
+  background-color: var(--edu-accent);
+  color: white;
+} 
