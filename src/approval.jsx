@@ -6,27 +6,47 @@ export default function FacultyDashboard() {
   const [achievements, setAchievements] = useState([]);
   const [activeTab, setActiveTab] = useState('pending');
 
-  // Load achievements from localStorage on initial render
+  // Load achievements from mongodb
   useEffect(() => {
-    const savedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
-    setAchievements(savedAchievements);
-  }, []);
+  fetchAchievements(); // Load both approved and pending on first render
+}, []);
+
+//Load on intial render
+const fetchAchievements = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/certificates');
+    const data = await response.json();
+    setAchievements(data); // Now contains both approved & pending
+  } catch (error) {
+    console.error("Error fetching achievements:", error);
+  }
+};
 
   // Approve an achievement by changing its status to 'approved'
-  const approveAchievement = (id) => {
-    const updatedAchievements = achievements.map((a) =>
-      a.id === id ? { ...a, status: 'approved' } : a
-    );
-    setAchievements(updatedAchievements);
-    localStorage.setItem('achievements', JSON.stringify(updatedAchievements));
-  };
+ const approveAchievement = async (mongoId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/certificates/${mongoId}/approve`, {
+      method: 'PATCH',
+    });
+    if (!response.ok) throw new Error('Approval failed');
+    await fetchAchievements(); // Refresh the list automatically
+  } catch (error) {
+    console.error('Error approving achievement:', error);
+  }
+};
 
-  // Reject an achievement by removing it from the list
-  const rejectAchievement = (id) => {
-    const updatedAchievements = achievements.filter((a) => a.id !== id);
-    setAchievements(updatedAchievements);
-    localStorage.setItem('achievements', JSON.stringify(updatedAchievements));
-  };
+const rejectAchievement = async (mongoId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/certificates/${mongoId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Rejection failed');
+    await fetchAchievements(); // Refresh the list automatically
+  } catch (error) {
+    console.error('Error rejecting achievement:', error);
+  }
+};
+
 
   const pendingCount = achievements.filter(a => a.status === 'pending').length;
   const approvedCount = achievements.filter(a => a.status === 'approved').length;
@@ -149,7 +169,7 @@ export default function FacultyDashboard() {
           {activeTab === 'pending' ? (
             achievements.filter(a => a.status === 'pending').length > 0 ? (
           achievements.filter(a => a.status === 'pending').map((a) => (
-                <div className="col-md-4 mb-4" key={a.id}>
+                <div className="col-md-4 mb-4" key={a._id}>
                   <div className="card shadow-sm" style={{ 
                     borderRadius: '10px', 
                     overflow: 'hidden',
@@ -182,7 +202,7 @@ export default function FacultyDashboard() {
                       <div className="d-flex mt-3">
                         <button 
                           className="btn btn-success me-2 flex-fill" 
-                          onClick={() => approveAchievement(a.id)}
+                          onClick={() => approveAchievement(a._id)}
                           style={{
                             background: 'var(--edu-success)',
                             border: 'none',
@@ -194,7 +214,7 @@ export default function FacultyDashboard() {
                   </button>
                         <button 
                           className="btn btn-danger flex-fill" 
-                          onClick={() => rejectAchievement(a.id)}
+                          onClick={() => rejectAchievement(a._id)}
                           style={{
                             background: 'var(--edu-error)',
                             border: 'none',
@@ -230,7 +250,7 @@ export default function FacultyDashboard() {
           ) : (
             achievements.filter(a => a.status === 'approved').length > 0 ? (
               achievements.filter(a => a.status === 'approved').map((a) => (
-                <div className="col-md-4 mb-4" key={a.id}>
+                <div className="col-md-4 mb-4" key={a._id}>
                   <div className="card shadow-sm" style={{ 
                     borderRadius: '10px', 
                     overflow: 'hidden',

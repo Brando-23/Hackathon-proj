@@ -23,27 +23,33 @@ export default function Home() {
     'Community Service'
   ];
 
-  // Load achievements from localStorage on initial render
+ // Load achievements from mongodb
   useEffect(() => {
-    const savedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
-    setAchievements(savedAchievements);
-    const initialBadge = assignProfileBadge(savedAchievements);
-    setProfileBadge(initialBadge);
-    setPrevBadge(initialBadge); // Initialize prevBadge
-  }, []);
+  fetchAchievements(); // Load both approved and pending on first render
+}, []);
 
-  // Save achievements to localStorage whenever they change
+//load on intial render
+const fetchAchievements = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/certificates');
+    const data = await response.json();
+    setAchievements(data); // Now contains both approved & pending
+  } catch (error) {
+    console.error("Error fetching achievements:", error);
+  }
+};
+
+
   useEffect(() => {
-    localStorage.setItem('achievements', JSON.stringify(achievements));
-    const updatedBadge = assignProfileBadge(achievements);
+  const updatedBadge = assignProfileBadge(achievements);
 
-    // Trigger celebration if the badge has changed
-    if (updatedBadge !== prevBadge) {
-      setProfileBadge(updatedBadge);
-      setPrevBadge(updatedBadge);
-      triggerBadgeCelebration();
-    }
-  }, [achievements]);
+  if (updatedBadge !== prevBadge) {
+    setProfileBadge(updatedBadge);
+    setPrevBadge(updatedBadge);
+    triggerBadgeCelebration();
+  }
+}, [achievements]);
+
 
   // Badge Assignment Function based on total number of approved achievements
   const assignProfileBadge = (currentAchievements) => {
@@ -82,40 +88,49 @@ export default function Home() {
     });
   };
 
-  // Handle form submission
+  //Handle form Submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (!image) {
-      alert('Please select an image to upload');
-      return;
-    }
+  e.preventDefault();
 
-    try {
-      // Convert image to base64 and add the new achievement to the list with pending status
-      const base64Image = await convertToBase64(image);
-      const newAchievement = {
-        id: achievements.length + 1,
-        achievement,
-        category,
-        image: base64Image,
-        status: 'pending', // Set initial status as 'pending'
-        date: new Date().toISOString()
-      };
+  if (!image) {
+    alert('Please select an image to upload');
+    return;
+  }
 
-      const updatedAchievements = [...achievements, newAchievement];
-      setAchievements(updatedAchievements);
-      setAchievement('');
-      setCategory('Academic');
-      setImage(null);
+  try {
+    const base64Image = await convertToBase64(image);
+    const newAchievement = {
+      achievement,
+      category,
+      image: base64Image,
+      date: new Date().toISOString(),
+      status: 'pending' // Set default status
+    };
 
-      // Reset file input
-      document.getElementById('achievement-image').value = '';
-    } catch (error) {
-      console.error('Error handling image:', error);
-      alert('There was an error processing your image. Please try again.');
-    }
-  };
+    const response = await fetch('http://localhost:5000/certificates', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(newAchievement)
+});
+
+    if (!response.ok) throw new Error('Failed to submit achievement');
+
+    const saved = await response.json();
+    setAchievements(prev => [...prev, saved]);
+
+    setAchievement('');
+    setCategory('Academic');
+    setImage(null);
+    document.getElementById('achievement-image').value = '';
+
+  } catch (error) {
+    console.error('Submission error:', error);
+    alert('Failed to submit. Try again later.');
+  }
+  fetchAchievements();
+};
+
 
   // Trigger badge celebration and hide after 3 seconds
   const triggerBadgeCelebration = () => {
@@ -126,10 +141,23 @@ export default function Home() {
   };
 
   // Delete an achievement
-  const deleteAchievement = (id) => {
-    const updatedAchievements = achievements.filter((a) => a.id !== id);
-    setAchievements(updatedAchievements);
-  };
+  const deleteAchievement = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:5000/certificates/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete achievement');
+    }
+
+    setAchievements((prev) => prev.filter((a) => a._id !== id));
+  } catch (error) {
+    console.error('Error deleting achievement:', error);
+    alert('Failed to delete achievement. Try again.');
+  }
+};
+
 
   // Get color based on category
   const getCategoryColor = (category) => {
@@ -504,7 +532,7 @@ export default function Home() {
                               </div>
                               <button 
                                 className="btn btn-sm btn-outline-danger" 
-                                onClick={() => deleteAchievement(a.id)}
+                                onClick={() => deleteAchievement(a._id)}
                                 style={{ borderRadius: '50px' }}
                               >
                                 <i className="bi bi-trash3"></i>

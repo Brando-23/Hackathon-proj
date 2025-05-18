@@ -5,14 +5,20 @@ export default function AwardsPage() {
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current index for the carousel
 
   // Load approved achievements from localStorage on initial render
-  useEffect(() => {
-    const savedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
-    const approvedAchievements = savedAchievements.filter((a) => a.status === 'approved');
-    setAchievements(approvedAchievements);
-  }, []);
+  const fetchAchievements = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/certificates');
+    const data = await response.json();
+    setAchievements(data); // Now contains both approved & pending
+  } catch (error) {
+    console.error("Error fetching achievements:", error);
+  }
+};
 
   // Automatically slide every 1 second
   useEffect(() => {
+
+    fetchAchievements();
     const interval = setInterval(() => {
       slide(1); // Move to the next item
     }, 1000); // Change to 1000 milliseconds for 1 second
@@ -97,7 +103,7 @@ export default function AwardsPage() {
           
           {achievements.map((a, index) => (
             <div
-              key={a.id}
+              key={a._id}
               style={index === currentIndex ? activeItemStyle : carouselItemStyle}
             >
               <img src={a.image} style={carouselImageStyle} alt="achievement" />
