@@ -5,9 +5,9 @@ import bodyParser from 'body-parser';
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: '100mb' }));
 
-mongoose.connect('mongodb://localhost:27017/Achievements').then(() => console.log('MongoDB connected'))
+mongoose.connect('mongodb+srv://brand:Qwertyuiop@cluster0.fgexqt2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Schema with status
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 // Submit new certificate (default status: pending)
-app.post('/certificates', async (req, res) => {
+app.post('/Certificates', async (req, res) => {
   try {
     const { achievement, category, image, date } = req.body;
     const newCert = new Certificate({ achievement, category, image, date, status: 'pending' });
@@ -39,7 +39,7 @@ app.post('/certificates', async (req, res) => {
 });
 
 // Fetch all certificates 
-app.get('/certificates', async (req, res) => {
+app.get('/Certificates', async (req, res) => {
   try {
     const certificates = await Certificate.find(); // No filter
     res.json(certificates);
@@ -50,7 +50,7 @@ app.get('/certificates', async (req, res) => {
 
 
 // Approve a certificate (PATCH preferred for partial update)
-app.patch('/certificates/:id/approve', async (req, res) => {
+app.patch('/Certificates/:id/approve', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await Certificate.findByIdAndUpdate(
@@ -71,7 +71,7 @@ app.patch('/certificates/:id/approve', async (req, res) => {
 });
 
 // Delete a certificate
-app.delete('/certificates/:id', async (req, res) => {
+app.delete('/Certificates/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await Certificate.findByIdAndDelete(id);
